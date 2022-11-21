@@ -14,9 +14,9 @@ class trabajadorService {
       this.trabajadores.push({
         id: crypto.randomUUID(), //da el ID
         nombre: 'Trabajador n°' + index, //genera los nombres
-        DNI: 10000 + Math.floor(Math.random()*190000000000),
+        codigo: 10000 + Math.floor(Math.random()*190000000000),
         estaBloqueado: Math.random() < 0.25 //valor boolean
-      }); //genera DNI aleatorios entre 0 y 1
+      }); //genera codigo aleatorios entre 0 y 1
     }
   }
 
