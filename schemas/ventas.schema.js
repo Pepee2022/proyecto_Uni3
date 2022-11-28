@@ -1,20 +1,16 @@
 const Joi = require('joi');
-//creacion de los campos que vamos a validar
 const id = Joi.string()
-              .uuid();//campo id
-const nombre = Joi.string() //valor
-                  .alphanum()
+              .uuid();
+const nombre = Joi.string()
                   .min(8)
-                  .max(20);
+                  .max(40);
 
 const createVentaSchema = Joi.object({
-  nombre: nombre.required(),//etiqueta < >Valor
-  // cantidad: cantidad.required()
+  nombre: nombre.required()
 });
-//creación de los objetos de validación, los esquemas
+
 const updateVentaSchema = Joi.object({
   nombre: nombre,
-  // cantidad: cantidad
 });
 
 const getVentaSchema = Joi.object({

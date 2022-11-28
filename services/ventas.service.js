@@ -1,7 +1,7 @@
 const { rejects } = require('assert');
 const crypto = require('crypto'); //para crear codigos UUID
 const boom = require('@hapi/boom');
-const sequelize = require('./../libs/sequelize');
+const { models } = require('./../libs/sequelize');
 
 class ventaService {
 
@@ -21,55 +21,64 @@ class ventaService {
     }
   }
 
-  create (data) {
-    const nuevoventa = {
+  async create (data) {
+    const nuevaventa = {
       id: crypto.randomUUID(), //creo productos y le coloco us ID
       ...data //desempaquetado
     };
-    this.ventas.push(nuevoventa);
-    return nuevoventa; // devuelvo el nuevo producto en el metodo create
+    const salida = await models.Venta.create(nuevaventa);
+    return salida; // devuelvo el nuevo producto en el metodo create
   }
 
   async find() {
-    const query = 'select * from tVentas';
-    const [ data ] = await sequelize.query(query);
-    return data;
+    const salida = await models.Venta.findAll();
+    return salida;
   }
 
   async findOne(id) {
-    const vent =  this.ventas.find(venta => { //seguarda en la variable insum
-      return venta.id === id;
-    }); //!ultizamos la negacición(!) para ver si es o no es producto
-    if (!vent) { //consulta del error
-      throw boom.notFound('Producto no encontrado'); //lanza un error boom
+    const vent = await models.Venta.findByPk(id);
+    if (!vent) {
+      throw boom.notFound('Producto no encontrado');
     }
-    return vent; //si no es un error devuelve el insum
+    // const vent =  this.ventas.find(venta => {
+    //   return venta.id === id;
+    // });
+    // if (!vent) {
+    //   throw boom.notFound('Producto no encontrado');
+    // }
+    return vent;
   }
 
   async update(id , changes) {
-    const index = this.ventas.findIndex(venta =>{
-      return venta.id === id;
-    });
-    if (index === -1) {
-      throw boom.notFound('Producto no encontrado');
-    }
-    const venta = this.ventas[index];
-    this.ventas[index] = {
-      ...venta,
-      ...changes
-    };
-    return this.ventas[index];
+    const vent = await this.findOne(id);
+    const salida = await vent.update(changes);
+    return salida;
+    // const index = this.ventas.findIndex(venta =>{
+    //   return venta.id === id;
+    // });
+    // if (index === -1) {
+    //   throw boom.notFound('Producto no encontrado');
+    // }
+    // const venta = this.ventas[index];
+    // this.ventas[index] = {
+    //   ...venta,
+    //   ...changes
+    // };
+    // return this.ventas[index];
   }
 
   async delete(id) {
-    const index = this.ventas.findIndex(venta =>{
-      return venta.id === id;
-    });
-    if (index === -1) {
-      throw boom.notFound('Producto no encontrado');
-    }
-    this.ventas.splice(index, 1);
+    const vent = await this.findOne(id);
+    await vent.destroy();
     return { id };
+    // const index = this.ventas.findIndex(venta =>{
+    //   return venta.id === id;
+    // });
+    // if (index === -1) {
+    //   throw boom.notFound('Producto no encontrado');
+    // }
+    // this.ventas.splice(index, 1);
+    // return { id };
   }
 }
 

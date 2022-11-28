@@ -26,10 +26,10 @@ router.post('/',
             validatorHandler(createVentaSchema, 'body'),//validamos que los datos que vamos a ingresar esten bien
             async (req, res) => {
   const body = req.body;
-  const nuevoVenta = await service.create(body);
+  const nuevaVenta = await service.create(body);
   res.status(201).json({
     message: 'creado',
-    nuevoVenta
+    nuevaVenta
   });
 });
 
