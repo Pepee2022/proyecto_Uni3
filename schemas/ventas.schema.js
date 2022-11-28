@@ -6,9 +6,6 @@ const nombre = Joi.string() //valor
                   .alphanum()
                   .min(8)
                   .max(20);
-// const cantidad = Joi.number() //valor
-//                   .integer()
-//                   .min(2);
 
 const createVentaSchema = Joi.object({
   nombre: nombre.required(),//etiqueta < >Valor

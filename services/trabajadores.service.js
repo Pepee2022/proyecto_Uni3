@@ -31,14 +31,6 @@ class trabajadorService {
 
   async find() {
     return this.trabajadores;
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
   }
 
   async findOne(id) {
