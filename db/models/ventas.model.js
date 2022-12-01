@@ -1,8 +1,9 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+const { TIPOVENTA_TABLE } = require('./tipoVenta.model');
 
-const VENTAS_TABLE = 'tVentas';
+const VENTAS_TABLE = 'venta';
 
-const VentasSchema = {
+const ventasSchema = {
     id: {
         primaryKey: true,
         type: DataTypes.UUID
@@ -11,6 +12,17 @@ const VentasSchema = {
         allowNull: false,
         type: DataTypes.STRING
     },
+    // tipoventaId: {
+    //     field: 'tipoventa_id',
+    //     allowNull: true,
+    //     type: DataTypes.UUID,
+    //     references: {
+    //         model: TIPOVENTA_TABLE,
+    //         key: 'id'
+    //     },
+    //     onUpdate: 'CASCADE',
+    //     onDelete: 'SET NULL'
+    // },
     createdAt: {
         allowNUll: false,
         type: DataTypes.DATE,
@@ -20,8 +32,8 @@ const VentasSchema = {
 };
 
 class Ventas extends Model {
-    static associate() {
-
+    static associate(models) {
+        this.belongsTo(models.TipoVenta, { as: 'tipoventa' });
     }
 
     static config(sequelize) {
@@ -34,4 +46,4 @@ class Ventas extends Model {
     }
 }
 
-module.exports = { VENTAS_TABLE, VentasSchema, Ventas};
+module.exports = { VENTAS_TABLE, ventasSchema, Ventas};
